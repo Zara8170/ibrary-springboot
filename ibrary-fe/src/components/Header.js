@@ -27,25 +27,37 @@ export default function Header() {
         {isCategoryOpen && (
           <div className="pl-4 space-y-2 flex flex-col">
             <Link
-              to="/sci"
+              to={{
+                pathname: "/category",
+                search: "?category=sci",
+              }}
               className="hover:underline hover:text-gray-300 transition duration-200 text-sm"
             >
               ☞ 과학
             </Link>
             <Link
-              to="/tech"
+              to={{
+                pathname: "/category",
+                search: "?category=tech",
+              }}
               className="hover:underline hover:text-gray-300 transition duration-200 text-sm"
             >
               ☞ 기술
             </Link>
             <Link
-              to="/lang"
+              to={{
+                pathname: "/category",
+                search: "?category=lang",
+              }}
               className="hover:underline hover:text-gray-300 transition duration-200 text-sm"
             >
               ☞ 언어
             </Link>
             <Link
-              to="/novel"
+              to={{
+                pathname: "/category",
+                search: "?category=novel",
+              }}
               className="hover:underline hover:text-gray-300 transition duration-200 text-sm"
             >
               ☞ 소설

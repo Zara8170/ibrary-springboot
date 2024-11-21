@@ -35,13 +35,12 @@ public class BookServiceImpl implements BookService {
     Category category = bookDTO.getCategoryId() != null // 카테고리 id가 있는지 없는지 부터 확인하고
         ? categoryDAO.getCategories(null).stream()// 전체 목록 가져와서
         .filter(e -> e.getId().equals(bookDTO.getCategoryId()))// 입력받은 카테고리 ID와 일치하는 카테고리 찾고
-        .findFirst() // 첫 번째로 찾은 카테고리 선택
+        .findFirst() // 첫 번째로 찾은 카테고리 선택해서
         .orElseThrow(()-> new IllegalArgumentException("category not found")) // 업으면 예외처리하고
         : null; // id null 이면 null 할당
 
     Book book = toEntity(bookDTO);
     book.setCategory(category);
-    book.setImgsrc(getCategoryImageUrl(bookDTO.getCategoryId()));
 
     Book saveBook = bookDAO.addBook(book);
     return toDTO(saveBook);
@@ -49,9 +48,6 @@ public class BookServiceImpl implements BookService {
 
   @Override
   public BookDTO updateBook(Long id, BookDTO bookDTO) {
-
-    Book existingBook = bookDAO.getBook(id);
-
     Category category = bookDTO.getCategoryId() != null
         ? categoryDAO.getCategories(null).stream()
         .filter(c -> c.getId().equals(bookDTO.getCategoryId()))
@@ -59,17 +55,11 @@ public class BookServiceImpl implements BookService {
         .orElseThrow(() -> new IllegalArgumentException("Category not found"))
         : null;
 
-    existingBook.setTitle(bookDTO.getTitle());
-    existingBook.setAuthor(bookDTO.getAuthor());
-    existingBook.setPublisher(bookDTO.getPublisher());
-    existingBook.setDescription(bookDTO.getDescription());
-    existingBook.setRented(bookDTO.isRented());
-    existingBook.setCategory(category);
+    Book updatedBook = toEntity(bookDTO);
+    updatedBook.setId(id);  // ID 설정 중요
+    updatedBook.setCategory(category);  // 카테고리 설정
 
-    existingBook.setImgsrc(getCategoryImageUrl(bookDTO.getCategoryId()));
-
-    Book resultBook = bookDAO.updateBook(id, existingBook);
-
+    Book resultBook = bookDAO.updateBook(id, updatedBook);
     return toDTO(resultBook);
   }
 
