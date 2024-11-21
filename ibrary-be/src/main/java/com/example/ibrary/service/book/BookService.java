@@ -74,9 +74,21 @@ public interface BookService {
         .author(bookDTO.getAuthor())
         .publisher(bookDTO.getPublisher())
         .rented(bookDTO.isRented())
+        .imgsrc(getCategoryImageUrl(bookDTO.getCategoryId()))
         .description(bookDTO.getDescription())
-        .imgsrc("http://via.placeholder.com/150x150/00ff00")
         .build();
   }
 
+  default String getCategoryImageUrl(Long categoryId) {
+    if(categoryId == null) {
+      return "http://via.placeholder.com/150x150/0000ff";
+    }
+    switch (categoryId.intValue()) {
+      case 1: return "http://via.placeholder.com/150x150/00fff0";
+      case 2: return "http://via.placeholder.com/150x150/d2691e";
+      case 3: return "http://via.placeholder.com/150x150/0ff200";
+      case 4: return "http://via.placeholder.com/150x150/000ff0";
+      default: return "http://via.placeholder.com/150x150/0000ff";
+    }
+  }
 }

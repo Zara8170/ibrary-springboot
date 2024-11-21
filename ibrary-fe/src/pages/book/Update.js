@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { updateBook } from "../../redux/bookSlice";
@@ -12,6 +12,7 @@ export default function Update() {
     state.book.books.find((b) => b.id === parseInt(id))
   );
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [inputValue, setInputValue] = useState({
     title: "",
     author: "",
@@ -34,15 +35,17 @@ export default function Update() {
           "http://localhost:8080/api/categories"
         );
         setCategories(response.data);
+        setLoading(false);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
+        setLoading(false);
       }
     };
     fetchCategories();
   }, []);
 
   useEffect(() => {
-    if (book) {
+    if (book && !loading) {
       setInputValue(() => ({
         title: book.title,
         author: book.author,
@@ -51,7 +54,7 @@ export default function Update() {
         categoryId: book.categoryId ? book.categoryId.toString() : "",
       }));
     }
-  }, [book]);
+  }, [book, loading]);
 
   const onSubmitUpdate = async (e) => {
     e.preventDefault();
@@ -163,6 +166,7 @@ export default function Update() {
         <button
           type="submit"
           className="bg-blue-500 rounded-md text-white w-full p-2 mt-4 hover:bg-blue-700"
+          disabled={!inputValue.categoryId}
         >
           저장
         </button>
