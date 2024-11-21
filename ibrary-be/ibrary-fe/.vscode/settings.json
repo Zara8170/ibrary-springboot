@@ -1,8 +1,0 @@
-{
-  // ctrl+shift+p -> setting.json
-  "emmet.syntaxProfiles": { "javascript": "jsx" },
-  "emmet.includeLanguages": {
-    "javascript": "javascriptreact",
-    "javascript": "html"
-  }
-}
